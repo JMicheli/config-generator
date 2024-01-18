@@ -7,7 +7,7 @@ use syn::{parse_macro_input, punctuated::Punctuated, token::Comma, DeriveInput, 
 
 use crate::{
   env_attrs::derive_env_loader,
-  utils::{get_fields, inner_type, inner_type_is_vec},
+  utils::{get_fields, inner_type, type_is_vec},
 };
 
 #[proc_macro_derive(ConfigGenerator, attributes(env_key))]
@@ -48,7 +48,7 @@ fn derive_optional_fields(ast: &DeriveInput) -> TokenStream {
 
     if inner_type("Option", ty).is_some() {
       quote! { #name: ::std::option::#ty }
-    } else if inner_type_is_vec(ty) {
+    } else if type_is_vec(ty) {
       quote! { #name: ::std::vec::#ty }
     } else {
       quote! { #name: ::std::option::Option<#ty> }
@@ -107,7 +107,7 @@ fn derive_new_struct_impls(ast: &DeriveInput) -> TokenStream {
     let name = &field.ident;
     let ty = &field.ty;
 
-    if inner_type_is_vec(ty) {
+    if type_is_vec(ty) {
       quote! { #name: ::std::vec::Vec::new() }
     } else {
       quote! { #name: ::std::option::Option::None }
@@ -142,7 +142,7 @@ fn gen_apply_to_fn(old_struct_ident: &Ident, fields: &Punctuated<Field, Comma>) 
             old.#name = self.#name.clone();
           }
         }
-      } else if inner_type_is_vec(ty) {
+      } else if type_is_vec(ty) {
         quote! {
           for item in &self.#name {
             if !old.#name.contains(item) {

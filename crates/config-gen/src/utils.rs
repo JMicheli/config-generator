@@ -33,7 +33,7 @@ pub fn inner_type<'a>(type_str: &str, ty: &'a Type) -> Option<&'a Type> {
   None
 }
 
-pub fn inner_type_is_vec(ty: &Type) -> bool {
+pub fn type_is_vec(ty: &Type) -> bool {
   inner_type("Vec", ty).is_some()
 }
 
