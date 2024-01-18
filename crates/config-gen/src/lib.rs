@@ -3,7 +3,7 @@ mod utils;
 
 use proc_macro2::{Ident, TokenStream};
 use quote::{format_ident, quote};
-use syn::{parse_macro_input, DeriveInput};
+use syn::{parse_macro_input, punctuated::Punctuated, token::Comma, DeriveInput, Field};
 
 use crate::{
   env_attrs::derive_env_loader,
@@ -80,7 +80,7 @@ fn derive_old_struct_impls(ast: &DeriveInput) -> TokenStream {
     impl #old_struct_ident {
       pub fn with_toml<P: ::core::convert::AsRef<::std::path::Path>>(mut self, path: &P) -> Self {
         let file_contents = ::std::fs::read_to_string(path).unwrap();
-        let optional_config: #new_struct_ident = ::toml::from_str(file_contents.as_str()).unwrap();
+        let optional_config = ::toml::from_str::<#new_struct_ident>(file_contents.as_str()).unwrap();
 
         // Apply loaded optional_config and return
         optional_config.apply_to(self)
@@ -114,6 +114,8 @@ fn derive_new_struct_impls(ast: &DeriveInput) -> TokenStream {
     }
   });
 
+  let apply_to_fn = gen_apply_to_fn(old_struct_ident, &fields);
+
   quote! {
     impl #new_struct_ident {
       pub fn new() -> Self {
@@ -122,9 +124,47 @@ fn derive_new_struct_impls(ast: &DeriveInput) -> TokenStream {
         }
       }
 
-      pub fn apply_to(&self, mut old: #old_struct_ident) -> #old_struct_ident {
-        todo!()
+      #apply_to_fn
+    }
+  }
+}
+
+fn gen_apply_to_fn(old_struct_ident: &Ident, fields: &Punctuated<Field, Comma>) -> TokenStream {
+  // Build up a vector of field appliction tokenstreams
+  let field_applyors: Vec<TokenStream> = fields
+    .iter()
+    .map(|field| {
+      let name = &field.ident;
+      let ty = &field.ty;
+      if inner_type("Option", ty).is_some() {
+        quote! {
+          if self.#name.is_some() {
+            old.#name = self.#name.clone();
+          }
+        }
+      } else if inner_type_is_vec(ty) {
+        quote! {
+          for item in &self.#name {
+            if !old.#name.contains(item) {
+              old.#name.push(item.clone());
+            }
+          }
+        }
+      } else {
+        quote! {
+          if let ::std::option::Option::Some(val) = self.#name {
+            old.#name = val;
+          }
+        }
       }
+    })
+    .collect();
+
+  quote! {
+    pub fn apply_to(&self, mut old: #old_struct_ident) -> #old_struct_ident {
+      #(#field_applyors)*
+
+      old
     }
   }
 }

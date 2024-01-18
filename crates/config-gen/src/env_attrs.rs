@@ -9,12 +9,16 @@ use crate::utils::{inner_type, is_parseable, is_type};
 /// loader for it.
 pub fn derive_env_loader(field: &Field) -> TokenStream {
   for attr in &field.attrs {
+    // Assuming we found an "env_key" attribute...
     if attr.path().is_ident("env_key") {
+      // ...We can drop through a few if statements to get its value
       if let Meta::NameValue(meta) = &attr.meta {
         if let Expr::Lit(expr) = &meta.value {
           if let Lit::Str(lit_str) = &expr.lit {
             let field_ident = &field.ident;
             let field_ty = &field.ty;
+            // Then pass that to a separate function because there
+            // are still a lot of cases and we're deeply nested here.
             return gen_env_loader(field_ident, field_ty, lit_str);
           }
         }
