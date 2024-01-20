@@ -2,32 +2,26 @@
 
 use config_generator::ConfigGenerator;
 
-#[derive(ConfigGenerator, Default)]
-pub struct TestParseConfig {
-  #[env_key = "X_KEY"]
-  pub x: u32,
-}
-
-#[derive(ConfigGenerator, Default)]
-pub struct TestVecConfig {
-  #[env_key = "VEC_KEY"]
-  pub list: Vec<String>,
-}
-
-#[derive(ConfigGenerator, Default)]
-pub struct TestOptionConfig {
-  #[env_key = "OPTIONAL_KEY"]
-  pub optional: Option<String>,
-}
-
 #[test]
 fn test_parse_config() {
+  #[derive(ConfigGenerator, Default)]
+  pub struct TestParseConfig {
+    #[env_key = "X_KEY"]
+    pub x: u32,
+  }
+
   let test_struct = TestParseConfig::default().with_toml(&"tests/tomls/simple_config.toml");
   assert_eq!(test_struct.x, 10);
 }
 
 #[test]
 fn test_vec_config() {
+  #[derive(ConfigGenerator, Default)]
+  pub struct TestVecConfig {
+    #[env_key = "VEC_KEY"]
+    pub list: Vec<String>,
+  }
+
   let test_struct = TestVecConfig::default().with_toml(&"tests/tomls/simple_config.toml");
   assert_eq!(
     test_struct.list,
@@ -37,6 +31,12 @@ fn test_vec_config() {
 
 #[test]
 fn test_optional_config() {
+  #[derive(ConfigGenerator, Default)]
+  pub struct TestOptionConfig {
+    #[env_key = "OPTIONAL_KEY"]
+    pub optional: Option<String>,
+  }
+
   let test_struct = TestOptionConfig::default().with_toml(&"tests/tomls/simple_config.toml");
 
   assert!(test_struct.optional.is_some());

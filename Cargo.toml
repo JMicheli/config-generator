@@ -1,6 +1,6 @@
 [package]
 name = "config-generator"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["Joseph Micheli <josephwmicheli@gmail.com>"]
 description = """
 A procedural macro for generating a configuration loader from
@@ -9,7 +9,7 @@ an input struct.
 readme = "Readme.md"
 categories = ["config"]
 keywords = ["derive", "macro", "configuration", "toml", "environment"]
-license = "BSD 3-Clause"
+license-file = "License"
 repository = "https://github.com/jmicheli/config-generator"
 edition = "2021"
 

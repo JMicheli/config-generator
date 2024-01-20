@@ -1,7 +1,8 @@
 use syn::{punctuated::Punctuated, token::Comma, Data, DeriveInput, Field, Fields, Type};
 
-const PARSEABLE_TYPES: [&str; 10] = [
-  "u8", "u16", "u32", "u64", "i8", "i16", "i32", "i64", "f32", "f64",
+/// An array of idents that will be deemed parseable by the is_parseable function.
+const PARSEABLE_TYPES: [&str; 12] = [
+  "u8", "u16", "u32", "u64", "u128", "i8", "i16", "i32", "i64", "i128", "f32", "f64",
 ];
 
 /// Extract the simple inner type of an outer type from a field

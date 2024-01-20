@@ -14,13 +14,12 @@ use crate::{
 pub fn derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
   let ast = parse_macro_input!(input as DeriveInput);
 
-  let fields = derive_optional_fields(&ast);
-
-  let new_struct_ident = derive_optional_struct_name(&ast);
   let old_struct_impls = derive_old_struct_impls(&ast);
+  let new_struct_ident = derive_optional_struct_name(&ast);
+  let fields = derive_optional_fields(&ast);
   let new_struct_impls = derive_new_struct_impls(&ast);
 
-  let new_struct = quote! {
+  let macro_output = quote! {
     #old_struct_impls
 
     #[derive(::serde::Deserialize)]
@@ -31,7 +30,7 @@ pub fn derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     #new_struct_impls
   };
 
-  new_struct.into()
+  macro_output.into()
 }
 
 fn derive_optional_struct_name(ast: &DeriveInput) -> Ident {
@@ -78,6 +77,7 @@ fn derive_old_struct_impls(ast: &DeriveInput) -> TokenStream {
   // by this crate.
   quote! {
     impl #old_struct_ident {
+      #[doc="Load the toml file at `path` and overwrite current values with them."]
       pub fn with_toml<P: ::core::convert::AsRef<::std::path::Path>>(mut self, path: &P) -> Self {
         let file_contents = ::std::fs::read_to_string(path).unwrap();
         let optional_config = ::toml::from_str::<#new_struct_ident>(file_contents.as_str()).unwrap();
@@ -86,6 +86,7 @@ fn derive_old_struct_impls(ast: &DeriveInput) -> TokenStream {
         optional_config.apply_to(self)
       }
 
+      #[doc="Load values from enviroment variables configured with the `env_key` attribute and overwrite current values with them."]
       pub fn with_env(mut self) -> Self {
         let mut env_configs = #new_struct_ident::new();
 

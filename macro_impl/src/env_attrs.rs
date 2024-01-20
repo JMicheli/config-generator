@@ -1,6 +1,6 @@
 use proc_macro2::{Ident, TokenStream};
-use quote::quote;
-use syn::{Expr, Field, Lit, LitStr, Meta, Type};
+use quote::{quote, quote_spanned};
+use syn::{spanned::Spanned, Expr, Field, Lit, LitStr, Meta, Type};
 
 use crate::utils::{inner_type, is_parseable, is_type};
 
@@ -20,8 +20,20 @@ pub fn derive_env_loader(field: &Field) -> TokenStream {
             // Then pass that to a separate function because there
             // are still a lot of cases and we're deeply nested here.
             return gen_env_loader(field_ident, field_ty, lit_str);
+          } else {
+            // Handle error case where env_key isn't set to a str value.
+            return quote_spanned! {
+              expr.span() =>
+              compile_error!("env_key must be a str");
+            };
           }
         }
+      } else {
+        // Handle error case where env_key is used but not set
+        return quote_spanned! {
+          attr.path().span() =>
+          compile_error!("env_key must be used as a name = value pair");
+        };
       }
     }
   }
