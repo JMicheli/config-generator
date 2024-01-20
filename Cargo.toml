@@ -7,6 +7,7 @@ A procedural macro for generating a configuration loader from
 an input struct.
 """
 readme = "Readme.md"
+homepage = "https://github.com/jmicheli/config-generator"
 categories = ["config"]
 keywords = ["derive", "macro", "configuration", "toml", "environment"]
 license-file = "License"
@@ -20,7 +21,7 @@ members = [
 ]
 
 [dependencies]
-"config-gen-macro-impl" = { path = "macro_impl" }
+"config-gen-macro-impl" = { version = "0.0.1", path = "macro_impl" }
 
 [dev-dependencies]
 trybuild = "1.0.89"
