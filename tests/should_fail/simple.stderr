@@ -1,0 +1,7 @@
+error: cannot find attribute `env` in this scope
+ --> tests/should_fail/simple.rs:7:5
+  |
+7 |   #[env = "NAME_ENV_KEY"]
+  |     ^^^
+  |
+  = note: `env` is in scope, but it is a function-like macro

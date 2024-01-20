@@ -1,0 +1,3 @@
+x = 10
+list = ["val1", "val2", "val3"]
+optional = "a_value"

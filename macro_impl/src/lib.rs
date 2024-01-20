@@ -152,8 +152,8 @@ fn gen_apply_to_fn(old_struct_ident: &Ident, fields: &Punctuated<Field, Comma>) 
         }
       } else {
         quote! {
-          if let ::std::option::Option::Some(val) = self.#name {
-            old.#name = val;
+          if let ::std::option::Option::Some(val) = &self.#name {
+            old.#name = val.clone();
           }
         }
       }
