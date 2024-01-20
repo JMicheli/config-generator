@@ -1,9 +1,0 @@
-[package]
-name = "test-bin"
-version = "0.0.0"
-edition = "2021"
-
-[dependencies]
-config-gen = { path = "../config-gen" }
-serde = { version = "1.0.195", features = ["derive"] }
-toml = "0.8.8"

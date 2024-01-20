@@ -2,5 +2,14 @@
   "[rust]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "rust-lang.rust-analyzer",
+  },
+
+  "[markdown]": {
+    "editor.unicodeHighlight.ambiguousCharacters": true,
+    "editor.unicodeHighlight.invisibleCharacters": true,
+    "editor.wordWrap": "on",
+
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

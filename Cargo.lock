@@ -3,7 +3,7 @@
 version = 3
 
 [[package]]
-name = "config-gen"
+name = "config-gen-macro-impl"
 version = "0.0.0"
 dependencies = [
  "proc-macro2",
@@ -11,6 +11,13 @@ dependencies = [
  "serde",
  "syn",
  "toml",
+]
+
+[[package]]
+name = "config-generator"
+version = "0.1.0"
+dependencies = [
+ "config-gen-macro-impl",
 ]
 
 [[package]]
@@ -97,15 +104,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-ident",
-]
-
-[[package]]
-name = "test-bin"
-version = "0.0.0"
-dependencies = [
- "config-gen",
- "serde",
- "toml",
 ]
 
 [[package]]

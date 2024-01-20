@@ -1,8 +1,23 @@
+[package]
+name = "config-generator"
+version = "0.1.0"
+authors = ["Joseph Micheli <josephwmicheli@gmail.com>"]
+description = """
+A procedural macro for generating a configuration loader from
+an input struct.
+"""
+readme = "Readme.md"
+categories = ["config"]
+keywords = ["derive", "macro", "configuration", "toml", "environment"]
+license = "BSD 3-Clause"
+repository = "https://github.com/jmicheli/config-generator"
 edition = "2021"
 
 [workspace]
 resolver = "2"
 members = [
-    "crates/test-bin",
-    "crates/config-gen"
+  "macro_impl",
 ]
+
+[dependencies]
+"config-gen-macro-impl" = { path = "macro_impl" }
