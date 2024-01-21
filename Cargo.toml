@@ -1,6 +1,6 @@
 [package]
 name = "config-generator"
-version = "0.0.1"
+version = "0.1.0"
 authors = ["Joseph Micheli <josephwmicheli@gmail.com>"]
 description = "A procedural macro for generating a configuration loader from an input struct."
 readme = "Readme.md"
@@ -19,7 +19,7 @@ members = [
 ]
 
 [dependencies]
-"config-gen-macro-impl" = { version = "0.0.1", path = "macro_impl" }
+"config-gen-macro-impl" = { version = "0.1.0", path = "macro_impl" }
 
 [dev-dependencies]
 trybuild = "1.0.89"
