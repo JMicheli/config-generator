@@ -9,6 +9,7 @@ categories = ["config"]
 keywords = ["derive", "macro", "configuration", "toml", "environment"]
 license-file = "License"
 repository = "https://github.com/jmicheli/config-generator"
+exclude = [".vscode/", "tests/", ".rustfmt.toml", ".gitignore"]
 edition = "2021"
 
 [workspace]
