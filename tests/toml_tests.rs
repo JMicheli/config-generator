@@ -3,7 +3,7 @@
 use config_generator::ConfigGenerator;
 
 #[test]
-fn test_parse_config() {
+fn toml_test_parse_config() {
   #[derive(ConfigGenerator, Default)]
   pub struct TestParseConfig {
     #[env_key = "X_KEY"]
@@ -15,7 +15,7 @@ fn test_parse_config() {
 }
 
 #[test]
-fn test_vec_config() {
+fn toml_test_vec_config() {
   #[derive(ConfigGenerator, Default)]
   pub struct TestVecConfig {
     #[env_key = "VEC_KEY"]
@@ -30,7 +30,7 @@ fn test_vec_config() {
 }
 
 #[test]
-fn test_optional_config() {
+fn toml_test_optional_config() {
   #[derive(ConfigGenerator, Default)]
   pub struct TestOptionConfig {
     #[env_key = "OPTIONAL_KEY"]

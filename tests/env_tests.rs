@@ -5,7 +5,7 @@ use std::env;
 use config_generator::ConfigGenerator;
 
 #[test]
-fn test_parse_config() {
+fn env_test_parse_config() {
   #[derive(ConfigGenerator, Default)]
   struct TestParseConfig {
     #[env_key = "X_KEY"]
@@ -19,7 +19,7 @@ fn test_parse_config() {
 }
 
 #[test]
-fn test_vec_config() {
+fn env_test_vec_config() {
   #[derive(ConfigGenerator, Default)]
   struct TestVecConfig {
     #[env_key = "VEC_KEY"]
@@ -36,7 +36,7 @@ fn test_vec_config() {
 }
 
 #[test]
-fn test_option_config() {
+fn env_test_option_config() {
   #[derive(ConfigGenerator, Default)]
   struct TestOptionConfig {
     #[env_key = "OPTIONAL_KEY"]
