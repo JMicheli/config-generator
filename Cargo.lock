@@ -13,7 +13,7 @@ dependencies = [
 
 [[package]]
 name = "config-gen-macro-impl"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -24,7 +24,7 @@ dependencies = [
 
 [[package]]
 name = "config-generator"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "config-gen-macro-impl",
  "serde",

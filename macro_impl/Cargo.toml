@@ -1,6 +1,6 @@
 [package]
 name = "config-gen-macro-impl"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Joseph Micheli <josephwmicheli@gmail.com>"]
 description = "A helper crate containing the macro implementation for config-generator."
 license-file = "../License"

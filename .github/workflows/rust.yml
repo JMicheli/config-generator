@@ -41,4 +41,4 @@ jobs:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: |
           (cd macro_impl && cargo publish)
-          (cargo publish)
+          cargo publish
