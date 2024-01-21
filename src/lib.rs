@@ -20,11 +20,14 @@
 //! }
 //! ```
 //!
-//! This generates a private struct called `Optional<InputStruct>`. Thus, in the example above,
+//! This generates a private struct called `Optional[InputStruct]`. Thus, in the example above,
 //! `OptionalConfig` would be generated. The generated optional struct is identical to the input
-//! struct except that each of its fields is `Option<T>`. This field is used internally to track
+//! struct except that each of its fields is an [Option<T>]. This field is used internally to track
 //! loaded data and apply it to the configuration struct when the user calls the `with_toml` or
 //! `with_environment` functions to load values.
+//!
+//! Note that the user is expected to derive [Default] or implement some other means of obtaining
+//! a starting point for configuration loading, such as a `new` function.
 //!
 //! For example, the following basic example loads values from an input toml file.
 //! ```
@@ -36,7 +39,7 @@
 //! }
 //!
 //! fn main() {
-//!   let config = Config::default().with_toml(&"path/to/config.toml");
+//!   let config = Config::default().with_toml(&"tests/tomls/simple_config.toml");
 //! }
 //! ```
 //!
@@ -52,7 +55,7 @@
 //! }
 //!
 //! fn main() {
-//!   let config = Config::default().with_environment();
+//!   let config = Config::default().with_env();
 //! }
 //! ```
 //!
@@ -69,16 +72,16 @@
 //!
 //! fn main() {
 //!   let config = Config::default()
-//!     .with_toml(&"path/to/config.toml")
-//!     .with_environment();
+//!     .with_toml(&"tests/tomls/simple_config.toml")
+//!     .with_env();
 //! }
 //! ```
 //!
 //! Superimposing values follows certain rules:
-//! 1. If the original struct had an `Option<T>` field, the value for that field will _only_ be
-//! replaced if the new value is `Some`. A subseqently-loaded `None` value will _not_ be applied.
-//! 2. If the original struct had a `Vec<T>` field, subsequently-loaded values will be _combined_
-//! with prior values, such that the `Vec` has each new value pushed to the end.
+//! 1. If the original struct had an [Option<T>] field, the value for that field will _only_ be
+//! replaced if the new value is [Some]. A subseqently-loaded [None] value will _not_ be applied.
+//! 2. If the original struct had a [Vec<T>] field, subsequently-loaded values will be _combined_
+//! with prior values, such that the [Vec] has each new value pushed to the end.
 //! 3. For all other types, if a value is loaded, then that value will replace any previously-set value.
 
 pub use config_gen_macro_impl::ConfigGenerator;
