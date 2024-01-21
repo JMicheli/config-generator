@@ -18,7 +18,7 @@ To use, define a struct containing configuration variable that will be loaded by
 ```rust
 use config_generator::ConfigGenerator;
 
-#[derive(ConfigGenerator)]
+#[derive(ConfigGenerator, Default)]
 struct Config {
   #[env_key = "NAME_ENV_KEY"]
   pub name: String,
@@ -31,12 +31,12 @@ struct Config {
 }
 ```
 
-The resulting implementations will allow a config to be loaded from a toml file, the environment, or both, with loaded variables overwriting previously set ones.
+The resulting implementations will allow a config to be loaded from a toml file, the environment, or both, with loaded variables overwriting previously set ones. Note that you will need to implement a way to get some starting state for your config (probably either defining a `new` method or deriving `Default` as above).
 
 ```rust
 // Loads a default config first from a toml file,
 // then overlays environment variable values.
-let config = Config::new()
+let config = Config::default()
   .with_toml("path/to/config.toml")
   .with_environment();
 ```
