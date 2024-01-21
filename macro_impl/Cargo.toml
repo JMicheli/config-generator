@@ -1,6 +1,10 @@
 [package]
 name = "config-gen-macro-impl"
 version = "0.0.1"
+authors = ["Joseph Micheli <josephwmicheli@gmail.com>"]
+description = "A helper crate containing the macro implementation for config-generator."
+license-file = "../License"
+repository = "https://github.com/jmicheli/config-generator"
 edition = "2021"
 
 [lib]
@@ -9,6 +13,8 @@ proc-macro = true
 [dependencies]
 proc-macro2 = "1.0.76"
 quote = "1.0.35"
-serde = { version = "1.0.195", features = ["derive"] }
 syn = { version = "2.0.48", features = ["extra-traits", "parsing"] }
+
+[dev-dependencies]
+serde = { version = "1.0.195", features = ["derive"] }
 toml = "0.8.8"

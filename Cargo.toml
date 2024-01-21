@@ -2,10 +2,7 @@
 name = "config-generator"
 version = "0.0.1"
 authors = ["Joseph Micheli <josephwmicheli@gmail.com>"]
-description = """
-A procedural macro for generating a configuration loader from
-an input struct.
-"""
+description = "A procedural macro for generating a configuration loader from an input struct."
 readme = "Readme.md"
 homepage = "https://github.com/jmicheli/config-generator"
 categories = ["config"]
