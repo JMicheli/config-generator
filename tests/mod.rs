@@ -1,6 +1,7 @@
 //! This module contains integration tests for the macro.
 
 mod env_tests;
+#[cfg(feature = "load_toml")]
 mod toml_tests;
 
 #[test]

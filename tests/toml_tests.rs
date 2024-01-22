@@ -1,8 +1,10 @@
 //! Test the toml loading capabilities of the macro.
 
+#[cfg(feature = "load_toml")]
 use config_generator::ConfigGenerator;
 
 #[test]
+#[cfg(feature = "load_toml")]
 fn toml_test_parse_config() {
   #[derive(ConfigGenerator, Default)]
   pub struct TestParseConfig {
@@ -15,6 +17,7 @@ fn toml_test_parse_config() {
 }
 
 #[test]
+#[cfg(feature = "load_toml")]
 fn toml_test_vec_config() {
   #[derive(ConfigGenerator, Default)]
   pub struct TestVecConfig {
@@ -30,6 +33,7 @@ fn toml_test_vec_config() {
 }
 
 #[test]
+#[cfg(feature = "load_toml")]
 fn toml_test_optional_config() {
   #[derive(ConfigGenerator, Default)]
   pub struct TestOptionConfig {

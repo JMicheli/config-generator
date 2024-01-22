@@ -25,3 +25,7 @@ members = [
 trybuild = "1.0.89"
 serde = { version = "1.0.195", features = ["derive"] }
 toml = "0.8.8"
+
+[features]
+load_toml = ["config-gen-macro-impl/load_toml"]
+default = ["load_toml"]

@@ -64,37 +64,48 @@ fn derive_old_struct_impls(ast: &DeriveInput) -> TokenStream {
   let old_struct_ident = &ast.ident;
   let new_struct_ident = derive_optional_struct_name(ast);
 
-  // Generate the loaders used in the from_env function
-  // to load env values into the
+  // Write new struct implementations for the input struct. These will define the from_toml and
+  // with_env functions for the struct, which are the main functionality exposed by this crate.
+
+  // We start with the with_env function, which loads from the environment.
+  // First we generate a Vec<TokenStream> of loaders for each field.
   let env_loaders: Vec<TokenStream> = get_fields(ast)
     .iter()
     .map(|field| derive_env_loader(field))
     .collect();
+  // And write the actual fn implementation into a TokenStream
+  let with_env_fn = quote! {
+    #[doc="Load values from enviroment variables configured with the `env_key` attribute and overwrite current values with them."]
+    pub fn with_env(mut self) -> Self {
+      let mut env_configs = #new_struct_ident::new();
 
-  // Write new struct implementations for the input struct
-  // These will define the from_toml and from_env functions
-  // for the struct, which are the main functionality exposed
-  // by this crate.
+      #(#env_loaders)*
+
+      // Apply optional_config from environment and return
+      env_configs.apply_to(self)
+    }
+  };
+
+  // Then we move onto the with_toml fn. This is optional depending on what features are enabled, so we
+  // switch on that here.
+  #[cfg(not(feature = "load_toml"))]
+  let with_toml_fn = quote! {};
+  #[cfg(feature = "load_toml")]
+  let with_toml_fn = quote! {
+    #[doc="Load the toml file at `path` and overwrite current values with them."]
+    pub fn with_toml<P: ::core::convert::AsRef<::std::path::Path>>(mut self, path: &P) -> Self {
+      let file_contents = ::std::fs::read_to_string(path).unwrap();
+      let optional_config = ::toml::from_str::<#new_struct_ident>(file_contents.as_str()).unwrap();
+
+      // Apply loaded optional_config and return
+      optional_config.apply_to(self)
+    }
+  };
+
   quote! {
     impl #old_struct_ident {
-      #[doc="Load the toml file at `path` and overwrite current values with them."]
-      pub fn with_toml<P: ::core::convert::AsRef<::std::path::Path>>(mut self, path: &P) -> Self {
-        let file_contents = ::std::fs::read_to_string(path).unwrap();
-        let optional_config = ::toml::from_str::<#new_struct_ident>(file_contents.as_str()).unwrap();
-
-        // Apply loaded optional_config and return
-        optional_config.apply_to(self)
-      }
-
-      #[doc="Load values from enviroment variables configured with the `env_key` attribute and overwrite current values with them."]
-      pub fn with_env(mut self) -> Self {
-        let mut env_configs = #new_struct_ident::new();
-
-        #(#env_loaders)*
-
-        // Apply optional_config from environment and return
-        env_configs.apply_to(self)
-      }
+      #with_env_fn
+      #with_toml_fn
     }
   }
 }
