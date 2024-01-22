@@ -2,6 +2,14 @@
 //! configuration loading boilerplate. It currently provides two main features:
 //! TOML loading, and loading of values from environment variables.
 //!
+//! # Features
+//!
+//! By default, the `load_toml` feature is enabled, supplying a `with_toml` function implementation
+//! on the input struct, and consequently requiring the [serde] and [toml] crates. This feature can
+//! be disabled, and these crates removed, if the user so chooses.
+//!
+//! # Usage
+//!
 //! The macro is used by applying it to a struct via `#[derive(ConfigGenerator)`.
 //!
 //! ```

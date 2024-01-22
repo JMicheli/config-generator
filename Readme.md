@@ -41,6 +41,10 @@ let config = Config::default()
   .with_environment();
 ```
 
+### Features
+
+By default, the `load_toml` feature is enabled, supplying a `with_toml` function implementation on the input struct, and consequently requiring the [serde](https://crates.io/crates/serde) and [toml](https://crates.io/crates/toml) crates. This feature can be disabled, and these crates removed, if the user so chooses.
+
 ## Acknowledgements
 
 This macro is inspired by a use-case for the [optional_struct](https://crates.io/crates/optional_struct) macro, which also doubles as a very useful resource for those wishing to learn about writing procedural macros in rust.
